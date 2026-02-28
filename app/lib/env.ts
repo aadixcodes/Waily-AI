@@ -12,7 +12,7 @@ const requiredEnv = [
 export type EnvKey = (typeof requiredEnv)[number];
 
 export function getEnv(key: EnvKey): string {
-  const value = process.env[key];
+  const value = (globalThis as any).process?.env?.[key];
   if (!value) {
     throw new Error(`Missing required env var: ${key}`);
   }
@@ -21,7 +21,7 @@ export function getEnv(key: EnvKey): string {
 
 export function validateEnv(): void {
   for (const key of requiredEnv) {
-    if (!process.env[key]) {
+    if (!(globalThis as any).process?.env?.[key]) {
       console.warn(`[env] Missing ${key}. Some API calls will fail until configured.`);
     }
   }

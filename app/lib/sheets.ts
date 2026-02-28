@@ -24,3 +24,4 @@ export async function appendClientRecord(record: ClientRecord): Promise<void> {
     throw new Error(`Google Sheets append failed ${response.status}: ${await response.text()}`);
   }
 }
+

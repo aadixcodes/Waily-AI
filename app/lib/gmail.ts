@@ -74,16 +74,16 @@ export async function createReplyDraft(messageId: string, replyBody: string): Pr
     body: JSON.stringify({
       message: {
         threadId: messageId,
-        raw: Buffer.from(`Content-Type: text/plain; charset=\"UTF-8\"\n\n${replyBody}`).toString("base64url"),
+          raw: btoa(`Content-Type: text/plain; charset=\"UTF-8\"\n\n${replyBody}`).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, ''),
       },
     }),
   });
 }
 
 export async function sendEmail(to: string, subject: string, body: string): Promise<void> {
-  const rawMessage = Buffer.from(
+    const rawMessage = btoa(
     `To: ${to}\r\nSubject: ${subject}\r\nContent-Type: text/plain; charset=\"UTF-8\"\r\n\r\n${body}`,
-  ).toString("base64url");
+  ).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 
   await gmailFetch("messages/send", {
     method: "POST",

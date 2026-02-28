@@ -4,7 +4,7 @@ import { sendWhatsAppTextMessage } from "@/app/lib/whatsapp";
 
 export async function GET(): Promise<NextResponse> {
   try {
-    const ownerPhone = process.env.OWNER_WHATSAPP_NUMBER;
+    const ownerPhone = (globalThis as any).process?.env?.OWNER_WHATSAPP_NUMBER;
     if (!ownerPhone) {
       return NextResponse.json({ error: "OWNER_WHATSAPP_NUMBER is not configured" }, { status: 400 });
     }
